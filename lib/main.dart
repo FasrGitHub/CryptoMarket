@@ -7,17 +7,18 @@ import 'package:crypto_market/service_locator.dart' as di;
 import 'core/application.dart';
 import 'core/services/error_handling_service.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+void main() {
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  await di.init();
-  ErrorHandlingService.init();
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
 
-  runZonedGuarded(() {
+    await di.init();
+    ErrorHandlingService.init();
+
     runApp(const Application());
   }, ErrorHandlingService.reportError);
 }

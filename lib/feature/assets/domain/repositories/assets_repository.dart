@@ -1,3 +1,8 @@
+import '../entities/assets_response_entity.dart';
+
 abstract interface class AssetsRepository {
-  Future<void> getAssets();
+  Future<AssetsResponseEntity> getAssets({
+    required int limit,
+    required int offset,
+  });
 }
