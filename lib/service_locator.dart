@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
+import 'core/network/dio_client.dart';
+
 final getIt = GetIt.instance;
 
 Future<void> init() async {
@@ -17,4 +19,6 @@ Future<void> init() async {
       printStateFullData: false,
     ),
   );
+
+  getIt.registerLazySingleton(() => DioClient().create(talker: getIt()));
 }
