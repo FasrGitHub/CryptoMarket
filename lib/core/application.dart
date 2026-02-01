@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../feature/assets/presentation/screens/assets_screen.dart';
+import 'themes/theme.dart';
 
 class Application extends StatelessWidget {
   const Application({super.key});
@@ -8,6 +9,7 @@ class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: createLightTheme(),
       home: AssetsScreen(),
     );
   }
