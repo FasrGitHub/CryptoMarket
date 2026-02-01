@@ -26,7 +26,7 @@ API_KEY=your_key
 4. Run code generation:
 dart run build_runner
 ```bash
-build --delete-conflicting-outputs
+dart run build_runner build --delete-conflicting-outputs
 ```
 ### Option B (quick): Hardcode the key in `DioClient.dart`
 
