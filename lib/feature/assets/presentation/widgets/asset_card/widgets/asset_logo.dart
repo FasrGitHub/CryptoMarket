@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AssetLogo extends StatelessWidget {
-  const AssetLogo({super.key});
+  final Color color;
+
+  const AssetLogo({super.key, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +11,7 @@ class AssetLogo extends StatelessWidget {
       height: 56,
       width: 56,
       decoration: BoxDecoration(
-        color: Colors.red,
+        color: color,
         borderRadius: BorderRadius.all(Radius.circular(18)),
       ),
     );

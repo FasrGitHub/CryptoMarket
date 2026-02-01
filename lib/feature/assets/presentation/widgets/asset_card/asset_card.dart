@@ -6,11 +6,13 @@ import 'widgets/asset_price.dart';
 import 'widgets/asset_title.dart';
 
 class AssetCard extends StatelessWidget {
+  final Color logoColor;
   final AssetEntity asset;
 
   const AssetCard({
     super.key,
-    required this.asset
+    required this.logoColor,
+    required this.asset,
   });
 
   @override
@@ -21,7 +23,7 @@ class AssetCard extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
-          AssetLogo(),
+          AssetLogo(color: logoColor),
           AssetTitle(title: asset.symbol),
           const Spacer(),
           AssetPrice(priceUsd: asset.priceUsd),

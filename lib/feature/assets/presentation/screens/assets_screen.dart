@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../service_locator.dart';
 import '../bloc/assets_bloc/assets_bloc.dart';
+import '../utils/rgb_color_generator.dart';
 import '../widgets/asset_card/asset_card.dart';
 import '../widgets/center_loader.dart';
 import '../widgets/loader_at_end_list.dart';
@@ -18,6 +19,8 @@ class AssetsScreen extends StatefulWidget {
 class _AssetsScreenState extends State<AssetsScreen> {
   late final AssetsBloc _assetsBloc;
   late final ScrollController _scrollController;
+  final RgbColorGenerator _rgbColorGenerator = RgbColorGenerator();
+  final List<Color> _logoColors = [];
 
   @override
   void initState() {
@@ -32,9 +35,18 @@ class _AssetsScreenState extends State<AssetsScreen> {
     final max = _scrollController.position.maxScrollExtent;
     final current = _scrollController.position.pixels;
 
-    if (max - current <= max * 0.9 &&
-        _assetsBloc.state.requestStatus == RequestStatus.success) {
+    const threshold = 200.0;
+
+    if (max - current <= threshold &&
+        _assetsBloc.state.requestStatus == RequestStatus.success &&
+        !_assetsBloc.state.endOfList) {
       _assetsBloc.add(GetAssets());
+    }
+  }
+
+  void ensureColors(int count) {
+    while (_logoColors.length < count) {
+      _logoColors.add(_rgbColorGenerator.generateColor());
     }
   }
 
@@ -58,12 +70,16 @@ class _AssetsScreenState extends State<AssetsScreen> {
           } else {
             return Scaffold(
               body: ListView.builder(
-                shrinkWrap: true,
                 controller: _scrollController,
                 itemCount: state.assets.length + 1,
                 itemBuilder: (BuildContext context, int index) {
                   if (index < state.assets.length) {
-                    return AssetCard(asset: state.assets[index]);
+                    ensureColors(index + 1);
+
+                    return AssetCard(
+                      asset: state.assets[index],
+                      logoColor: _logoColors[index],
+                    );
                   }
                   if (state.requestStatus == RequestStatus.loading) {
                     return LoaderAtEndList();
@@ -71,7 +87,7 @@ class _AssetsScreenState extends State<AssetsScreen> {
                   if (state.requestStatus == RequestStatus.error) {
                     return TryAgainAtEndList();
                   }
-                  return Container();
+                  return SizedBox.shrink();
                 },
               ),
             );
